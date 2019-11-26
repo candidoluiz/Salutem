@@ -16,13 +16,22 @@ public class VendedorResource {
     @GetMapping(produces = "application/json")
     public @ResponseBody Iterable<VendedorDto> lista()
     {
-         return vr.findAll();
+         Iterable<VendedorDto> listas = vr.findAll();
+        return listas;
     }
 
     @PostMapping()
-    public VendedorDto incluir(@RequestBody VendedorDto vendedorDto)
+    public boolean incluir(@RequestBody VendedorDto vendedorDto)
     {
-        return vr.save(vendedorDto);
+        if (!vr.findVendedorCpf(vendedorDto.getCpf()))
+        {
+            vr.save(vendedorDto);
+            return true;
+        }else{
+            return false;
+        }
+
+
     }
 
     @DeleteMapping()

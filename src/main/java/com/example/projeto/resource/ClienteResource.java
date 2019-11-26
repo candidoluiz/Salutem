@@ -21,9 +21,16 @@ public class ClienteResource {
     }
 
     @PostMapping()
-    public ClienteDto incluir(@RequestBody ClienteDto clienteDto)
+    public boolean incluir(@RequestBody ClienteDto clienteDto)
     {
-        return cr.save(clienteDto);
+        if (!cr.findClienteCnpg(clienteDto.getCnpj()))
+        {
+            cr.save(clienteDto);
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     @DeleteMapping()
