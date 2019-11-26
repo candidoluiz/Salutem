@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VendedorRepository extends JpaRepository<VendedorDto, Long> {
-    boolean findVendedorCpf(String cpf);
+    boolean existsByCpf(String cpf);
 }

@@ -1,5 +1,8 @@
 package com.example.projeto.models;
 
+import com.example.projeto.utilitario.CpfCnpjException;
+import com.example.projeto.utilitario.CpfCnpjUtils;
+
 import javax.persistence.*;
 
 @Entity
@@ -22,6 +25,20 @@ public class VendedorDto {
 
     @Column(name = "longi")
     private String longi;
+
+    VendedorDto(){}
+
+    public VendedorDto(String nome, String cpf, String lat, String longi) throws CpfCnpjException {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.lat = lat;
+        this.longi = longi;
+
+        if (!CpfCnpjUtils.isValid(this.cpf))
+            throw new CpfCnpjException(this.cpf);
+
+    }
+
 
     public Long getVendedorId() {
         return vendedorId;
