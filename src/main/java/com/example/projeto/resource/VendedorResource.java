@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolationException;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -56,6 +57,10 @@ public class VendedorResource {
         vr.delete(vendedorDto);
     }
 
-
+    @GetMapping("/{id}")
+    public Optional<VendedorDto> buscar(@PathVariable(value = "id") long id)
+    {
+          return vr.findById(id);
+    }
 
 }

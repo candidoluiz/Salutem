@@ -1,6 +1,9 @@
 package com.example.projeto.models;
 
+import com.example.projeto.Mascara;
+
 import javax.persistence.*;
+import java.text.ParseException;
 
 @Entity
 @Table(name = "cliente")
@@ -38,12 +41,13 @@ public class ClienteDto {
         return nome;
     }
 
-    public String getCnpj() {
-        return cnpj;
+    public String getCnpj()  {
+       return Mascara.formatCnpj(cnpj);
+
     }
 
-    public String getRazaoSocial() {
-        return razaoSocial;
+    public String getRazaoSocial() throws ParseException {
+       return razaoSocial;
     }
 
     public String getLat() {

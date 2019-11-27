@@ -5,6 +5,7 @@ import com.example.projeto.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.Optional;
 
 @RestController
@@ -23,15 +24,14 @@ public class ClienteResource {
     }
 
     @PostMapping()
-    public boolean incluir(@RequestBody ClienteDto clienteDto)
-    {
-        if (!cr.existsByCnpj(clienteDto.getCnpj()))
-        {
+    public boolean incluir(@RequestBody ClienteDto clienteDto) throws ParseException {
+     //   if (!cr.existsByCnpj(clienteDto.getCnpj()))
+      //  {
             cr.save(clienteDto);
             return true;
-        }else{
-            return false;
-        }
+      //  }else{
+       //     return false;
+      //  }
 
     }
 //     @PostMapping("/{id}")
