@@ -40,7 +40,7 @@ ClienteDto c = new ClienteDto();
             cliente.setVendedorDto(distribuicoes.get(0).getVendedor());
             cliente.setDistancia(Double.toString(distribuicoes.get(0).getDistancia()));
 
-            System.out.println("O Cliente : " + cliente.getNome() + " tem o vendedor mais próximo: " + cliente.getVendedorDto().getNome() + " na distância de : " + cliente.getDistancia() + "Km");
+            System.out.println("O Cliente : " + cliente.getClienteId() + " - " + cliente.getNome() + " tem o vendedor mais próximo: " + cliente.getVendedorDto().getNome() + " na distância de : " + cliente.getDistancia() + "Km");
             cr.save(cliente);
         }
         return cr.findAll();
