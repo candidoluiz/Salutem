@@ -51,10 +51,10 @@ public class VendedorResource {
         }*/
     }
 
-    @DeleteMapping()
-    public void excluir(VendedorDto vendedorDto)
+    @DeleteMapping("/delete/{id}")
+    public void excluir(@PathVariable  Long id)
     {
-        vr.delete(vendedorDto);
+        vr.deleteById(id);
     }
 
     @GetMapping("/{id}")

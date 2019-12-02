@@ -29,6 +29,9 @@ public class ClienteDto {
     @Column(name = "longi")
     private String longi;
 
+    @Column(name = "distancia")
+    private String distancia;
+
     @ManyToOne()
     @JoinColumn(name = "vendedorid")
     private VendedorDto vendedorDto;
@@ -60,6 +63,10 @@ public class ClienteDto {
 
     public VendedorDto getVendedorDto() {
         return vendedorDto;
+    }
+
+    public void setDistancia(String distancia) {
+        this.distancia = distancia;
     }
 
 }

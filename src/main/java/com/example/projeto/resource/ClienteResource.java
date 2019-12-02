@@ -25,26 +25,25 @@ public class ClienteResource {
 
     @PostMapping()
     public boolean incluir(@RequestBody ClienteDto clienteDto) throws ParseException {
-     //   if (!cr.existsByCnpj(clienteDto.getCnpj()))
-      //  {
+        if (clienteDto.getClienteId() == null && cr.existsByCnpj(clienteDto.getCnpj())) {
+            return false;
+        } else {
             cr.save(clienteDto);
             return true;
-      //  }else{
-       //     return false;
-      //  }
-
+        }
     }
-//     @PostMapping("/{id}")
+
+//    @PostMapping("update/")
 //    public boolean update(@RequestBody ClienteDto clienteDto)
 //    {
 //            cr.save(clienteDto);
 //            return true;
 //    }
 
-    @DeleteMapping()
-    public void excluir(@RequestBody ClienteDto clienteDto)
+    @DeleteMapping("/delete/{id}")
+    public void excluir(@PathVariable  Long id)
     {
-        cr.delete(clienteDto);
+        cr.deleteById(id);
     }
 
     @GetMapping("/{id}")
