@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -21,52 +23,52 @@ ClienteDto c = new ClienteDto();
     @Autowired
     private VendedorRepository vr;
 
-    public   List<ClienteDto> gerencial()
-    {
-        List<ClienteDto> listaC = cr.findAll();
-        List<VendedorDto> listaV = vr.findAll();
-        List<ClienteDto> aux = new ArrayList<>();
+    public   List<ClienteDto> associarVendedores() {
 
-
-        for (int i = 0; i < listaC.size(); i++)
-        {
-            for (int j = 0; j < listaV.size()-1; j++)
-            {
-                if (LatLong.distancia(
-                        Double.parseDouble(listaC.get(i).getLat()),
-                        Double.parseDouble(listaC.get(i).getLongi()),
-                        Double.parseDouble(listaV.get(j).getLat()),
-                        Double.parseDouble(listaV.get(j).getLongi()))
-                        >
-                        LatLong.distancia(
-                        Double.parseDouble(listaC.get(i).getLat()),
-                        Double.parseDouble(listaC.get(i).getLongi()),
-                        Double.parseDouble(listaV.get(j+1).getLat()),
-                        Double.parseDouble(listaV.get(j+1).getLongi())))
-
-                {
-
-                    ClienteDto c = listaC.get(i);
-                    VendedorDto v = listaV.get(j);
-
-
-                    c.setVendedorDto(v);
-                    aux.add(c);
-
-
-                  // listaC.get(i).setVendedorDto(listaV.get(j));
-
-//                    listaC.get(i).setDistancia(LatLong.distancia(
-//                            Double.parseDouble(listaC.get(i).getLat()),
-//                            Double.parseDouble(listaC.get(i).getLongi()),
-//                            Double.parseDouble(listaV.get(j).getLat()),
-//                            Double.parseDouble(listaV.get(j).getLongi())));
-                }
+        for (ClienteDto cliente : cr.findAll()) {
+            List<DistribuicaoDTO> distribuicoes = new ArrayList<>();
+            for (VendedorDto vendedor : vr.findAll()) {
+                distribuicoes.add(
+                new DistribuicaoDTO(cliente, vendedor, LatLong.distancia(
+                        Double.parseDouble(cliente.getLat()),
+                        Double.parseDouble(cliente.getLongi()),
+                        Double.parseDouble(vendedor.getLat()),
+                        Double.parseDouble(vendedor.getLongi()))));
             }
+            Collections.sort(distribuicoes, Comparator.comparingDouble(DistribuicaoDTO::getDistancia));
+
+            cliente.setVendedorDto(distribuicoes.get(0).getVendedor());
+            cliente.setDistancia(Double.toString(distribuicoes.get(0).getDistancia()));
+
+            System.out.println("O Cliente : " + cliente.getNome() + " tem o vendedor mais próximo: " + cliente.getVendedorDto().getNome() + " na distância de : " + cliente.getDistancia() + "Km");
+            cr.save(cliente);
+        }
+        return cr.findAll();
+    }
+
+
+
+    class DistribuicaoDTO {
+        private ClienteDto cliente;
+        private VendedorDto vendedor;
+        private Double distancia;
+
+        DistribuicaoDTO(ClienteDto cliente, VendedorDto vendedor, Double distancia) {
+            this.cliente = cliente;
+            this.vendedor = vendedor;
+            this.distancia = distancia;
         }
 
+        public ClienteDto getCliente() {
+            return cliente;
+        }
 
-        return aux;
+        public Double getDistancia() {
+            return distancia;
+        }
 
+        public VendedorDto getVendedor() {
+            return vendedor;
+        }
     }
 }

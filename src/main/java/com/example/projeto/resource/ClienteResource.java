@@ -60,6 +60,6 @@ public class ClienteResource {
     @GetMapping("/gerenciar/distribuir")
     public List<ClienteDto> gerenciar()
     {
-        return d.gerencial();
+        return d.associarVendedores();
     }
 }
