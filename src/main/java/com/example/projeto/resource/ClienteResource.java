@@ -1,11 +1,13 @@
 package com.example.projeto.resource;
 
+import com.example.projeto.Distribuir;
 import com.example.projeto.models.ClienteDto;
 import com.example.projeto.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -15,6 +17,9 @@ public class ClienteResource {
 
     @Autowired
     private ClienteRepository cr;
+
+    @Autowired
+    private Distribuir d;
 
     @GetMapping(produces = "application/json")
     public @ResponseBody Iterable<ClienteDto> lista()
@@ -50,5 +55,11 @@ public class ClienteResource {
     public Optional<ClienteDto> buscar(@PathVariable(value = "id") long id)
     {
           return cr.findById(id);
+    }
+
+    @GetMapping("/gerenciar/distribuir")
+    public List<ClienteDto> gerenciar()
+    {
+        return d.gerencial();
     }
 }

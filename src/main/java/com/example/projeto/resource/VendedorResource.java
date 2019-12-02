@@ -28,19 +28,19 @@ public class VendedorResource {
     }
 
     @PostMapping()
-    public ResponseEntity incluir(@RequestBody VendedorDto vendedorDto) {
-        try {
-            VendedorDto novoVendedor = new VendedorDto(vendedorDto.getNome(), vendedorDto.getCpf(), vendedorDto.getLat(), vendedorDto.getLongi());
-            return ResponseEntity.status(HttpStatus.CREATED).body(vr.save(novoVendedor).getVendedorId());
-        } catch (ConstraintViolationException cex) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("O CPF " + vendedorDto.getCpf() + " já existe");
-        } catch ( CpfCnpjException e ) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch ( Exception e ) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public VendedorDto incluir(@RequestBody VendedorDto vendedorDto) {
+//        try {
+//            VendedorDto novoVendedor = new VendedorDto(vendedorDto.getNome(), vendedorDto.getCpf(), vendedorDto.getLat(), vendedorDto.getLongi(), vendedorDto.getVendedorId());
+//            return ResponseEntity.status(HttpStatus.CREATED).body(vr.save(novoVendedor).getVendedorId());
+//        } catch (ConstraintViolationException cex) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body("O CPF " + vendedorDto.getCpf() + " já existe");
+//        } catch ( CpfCnpjException e ) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        } catch ( Exception e ) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
 
-
+    return vr.save(vendedorDto);
         /*if (!vr.existsByCpf(vendedorDto.getCpf()))
         {
             VendedorDto novoVendedor = new VendedorDto(vendedorDto.getNome(), vendedorDto.getCpf(), vendedorDto.getLat(), vendedorDto.getLongi());

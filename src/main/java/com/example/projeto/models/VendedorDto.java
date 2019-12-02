@@ -28,17 +28,37 @@ public class VendedorDto {
 
     VendedorDto(){}
 
-    public VendedorDto(String nome, String cpf, String lat, String longi) throws CpfCnpjException {
+    public void setVendedorId(Long vendedorId) {
+        this.vendedorId = vendedorId;
+    }
+
+    public VendedorDto(String nome, String cpf, String lat, String longi, Long vendedorId) throws CpfCnpjException {
         this.nome = nome;
         this.cpf = cpf;
         this.lat = lat;
         this.longi = longi;
+        this.vendedorId = vendedorId;
 
         if (!CpfCnpjUtils.isValid(this.cpf))
             throw new CpfCnpjException(this.cpf);
 
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public void setLongi(String longi) {
+        this.longi = longi;
+    }
 
     public Long getVendedorId() {
         return vendedorId;
