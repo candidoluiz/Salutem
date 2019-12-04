@@ -1,6 +1,6 @@
 package com.example.projeto.models;
 
-import com.example.projeto.utilitario.CpfCnpjException;
+import com.example.projeto.exceptions.CpfCnpjException;
 import com.example.projeto.utilitario.CpfCnpjUtils;
 
 import javax.persistence.*;

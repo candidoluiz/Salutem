@@ -1,21 +1,41 @@
 package com.example.projeto.models;
 
-import com.example.projeto.Mascara;
+import com.example.projeto.LatLong;
+import com.example.projeto.exceptions.CpfCnpjException;
+import com.example.projeto.utilitario.CpfCnpjUtils;
 
 import javax.persistence.*;
-import java.text.ParseException;
+import java.util.*;
 
 @Entity
 @Table(name = "cliente")
 public class ClienteDto {
 
+    public ClienteDto(Long clienteId, String cnpj, String razaoSocial, String lat, String longi) throws CpfCnpjException {
+        this.clienteId = clienteId;
+        this.cnpj = cnpj;
+        this.razaoSocial = razaoSocial;
+        this.lat = lat;
+        this.longi = longi;
+
+        if (!CpfCnpjUtils.isValid(this.cnpj))
+            throw new CpfCnpjException(this.cnpj);
+    }
+    public  ClienteDto(Long clienteId){
+         this.clienteId = clienteId;
+    }
+
+    public ClienteDto(){}
+
+    public ClienteDto(String distancia, VendedorDto vendedorDto){
+        this.distancia = distancia;
+        this.vendedorDto = vendedorDto;
+    }
+
     @Id
     @Column(name = "clienteid")
     @GeneratedValue
     private Long clienteId;
-
-    @Column(name = "nome")
-    private String nome;
 
     @Column(name = "cnpj")
     private String cnpj;
@@ -40,52 +60,12 @@ public class ClienteDto {
         return clienteId;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
     public String getCnpj() {
         return cnpj;
     }
-//    public String getCnpj()  {
-//       return Mascara.formatCnpj(cnpj);
-//
-//    }
 
-    public void setClienteId(Long clienteId) {
-        this.clienteId = clienteId;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-
-    public void setRazaoSocial(String razaoSocial) {
-        this.razaoSocial = razaoSocial;
-    }
-
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    public void setLongi(String longi) {
-        this.longi = longi;
-    }
-
-    public String getDistancia() {
-        return distancia;
-    }
-
-    public void setVendedorDto(VendedorDto vendedorDto) {
-        this.vendedorDto = vendedorDto;
-    }
-
-    public String getRazaoSocial() throws ParseException {
-       return razaoSocial;
+    public String getRazaoSocial() {
+        return razaoSocial;
     }
 
     public String getLat() {
@@ -96,12 +76,36 @@ public class ClienteDto {
         return longi;
     }
 
+    public String getDistancia() {
+        return distancia;
+    }
+
     public VendedorDto getVendedorDto() {
         return vendedorDto;
     }
 
-    public void setDistancia(String distancia) {
-        this.distancia = distancia;
+
+    public void associarVendedorMaisProximo(List<VendedorDto> vendedores)
+    {
+        VendedorDto vendedorMaisProximo = null;
+        double distanciaMinima = Double.MAX_VALUE;
+
+        for (VendedorDto vendedor : vendedores) {
+            double distanciaLocal = LatLong.distancia(
+                        Double.parseDouble(this.lat),
+                        Double.parseDouble(this.longi),
+                        Double.parseDouble(vendedor.getLat()),
+                        Double.parseDouble(vendedor.getLongi()));
+
+            if (distanciaLocal < distanciaMinima) {
+                vendedorMaisProximo = vendedor;
+                distanciaMinima = distanciaLocal;
+            }
+        }
+
+        this.vendedorDto = vendedorMaisProximo;
     }
+
+
 
 }

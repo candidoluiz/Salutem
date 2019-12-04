@@ -15,4 +15,6 @@ public class LatLong {
         dist = dist*60*1.1515;
         return dist*1.609344;
     }
+
+
 }

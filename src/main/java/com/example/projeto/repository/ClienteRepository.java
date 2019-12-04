@@ -10,6 +10,7 @@ import java.util.List;
 public interface ClienteRepository  extends JpaRepository<ClienteDto, Long> {
     boolean existsByCnpj(String cnpj);
 
-    List<ClienteDto> findClienteDtosByClienteIdAndNome(Long id, String nome);
+    List<ClienteDto> findClienteDtosByClienteIdAndRazaoSocial(Long id, String razaoSocial);
+    List<ClienteDto> findByOrderByClienteIdAsc();
 
 }
